@@ -32,7 +32,7 @@ import com.example.practiceapp.ui.theme.PracticeAppTheme
 
 //All widgets in column
 @Composable
-fun MainScreen1(navController: NavController) {
+fun FirstScreen(navController: NavController) {
 
     Scaffold(
         topBar = {

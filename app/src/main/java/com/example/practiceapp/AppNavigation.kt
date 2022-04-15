@@ -9,8 +9,8 @@ import androidx.navigation.compose.rememberNavController
 fun navigate() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "main1") {
-        composable(route = "main1") { MainScreen1(navController = navController) }
-        composable(route = "main2") { MainScreen2() }
+        composable(route = "main1") { FirstScreen(navController = navController) }
+        composable(route = "main2") { SecondScreen() }
 
     }
 }
