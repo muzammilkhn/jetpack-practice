@@ -1,13 +1,10 @@
 package com.example.practiceapp
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +33,9 @@ import com.example.practiceapp.ui.theme.PracticeAppTheme
 fun FirstScreen(navController: NavController) {
 
     Scaffold(
+        drawerContent = {
+        },
+
         topBar = {
             TopAppBar(
                 title = {
@@ -56,7 +57,12 @@ fun FirstScreen(navController: NavController) {
 
 @Composable
 fun ContentWidget(navController: NavController) {
-    Column(modifier = Modifier.padding(20.dp, 30.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(20.dp, 30.dp)
+            .verticalScroll(rememberScrollState())
+
+    ) {
         TargetsListWidget()
         Spacer(modifier = Modifier.height(10.dp))
         ShiftHoursWidget("10:00 AM", "00:15:05")
@@ -209,8 +215,8 @@ fun PendingListWidget(pendingList: List<PendingItemModel>) {
         border = BorderStroke(1.dp, Color.LightGray),
         shape = RectangleShape
     ) {
-        LazyColumn {
-            items(pendingList) { item ->
+        Column {
+            pendingList.forEach { item ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -255,7 +261,7 @@ fun TodaysRoutePlan(navController: NavController) {
         Button(
             onClick = {
 
-                      navController.navigate("main2")
+                navController.navigate("main2")
             },
             shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
