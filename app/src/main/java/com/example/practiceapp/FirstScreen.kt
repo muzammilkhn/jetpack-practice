@@ -1,24 +1,25 @@
 package com.example.practiceapp
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,33 +27,75 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.practiceapp.ui.theme.PracticeAppTheme
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 //All widgets in column
 @Composable
 fun FirstScreen(navController: NavController) {
 
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
     Scaffold(
+        scaffoldState = scaffoldState,
         drawerContent = {
+            DrawerContent()
         },
-
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "Dashboard")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Filled.Menu, "")
-                    }
-                },
-                backgroundColor = Color.Green,
-                contentColor = Color.White
-            )
+            appBarContent(scope, scaffoldState)
         },
         content = {
             ContentWidget(navController = navController)
         })
+}
+
+@Composable
+fun DrawerContent() {
+    Column {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            shape= RectangleShape,
+            backgroundColor = Red
+        ) {}
+        Column {
+            screens.forEach { screen ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Filled.AddCircle,
+                        contentDescription = ""
+                    )
+                    Text(" " + screen.title)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun appBarContent(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+    TopAppBar(
+        title = {
+            Text(text = "Dashboard")
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                scope.launch {
+                    scaffoldState.drawerState.open()
+                }
+            }) {
+                Icon(Icons.Filled.Menu, "")
+            }
+        },
+        backgroundColor = Color.Green,
+        contentColor = Color.White
+    )
 }
 
 @Composable
@@ -122,7 +165,6 @@ fun ContentWidget(navController: NavController) {
 }
 
 //targets visited achieved row
-
 @Composable
 fun TargetsListWidget() {
     var count = remember { mutableStateOf(20) }
@@ -140,11 +182,9 @@ fun TargetsListWidget() {
     }
 }
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CardWidget(count: String, name: String, onTap: () -> Unit) {
-
     Card(
         shape = RectangleShape,
         border = BorderStroke(1.dp, Color.Green),
@@ -176,7 +216,6 @@ fun CardWidget(count: String, name: String, onTap: () -> Unit) {
 //Shift hours Widget
 @Composable
 fun ShiftHoursWidget(hoursSpent: String, startTime: String) {
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -204,7 +243,6 @@ fun PendingHeading() {
         fontSize = 25.sp
     )
 }
-
 
 //Pending List Widget
 data class PendingItemModel(val areaName: String, val pendingCount: Int)
@@ -244,7 +282,6 @@ fun PendingListWidget(pendingList: List<PendingItemModel>) {
     }
 }
 
-
 //Today's route widget
 @Composable
 fun TodaysRoutePlan(navController: NavController) {
@@ -261,7 +298,7 @@ fun TodaysRoutePlan(navController: NavController) {
         Button(
             onClick = {
 
-                navController.navigate("main2")
+                navController.navigate("main_2")
             },
             shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
@@ -285,7 +322,6 @@ data class RoutesItemData(val areaName: String, val shopName: String, val isComp
 
 @Composable
 fun RoutesListWidget(routesList: List<RoutesItemData>) {
-
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
