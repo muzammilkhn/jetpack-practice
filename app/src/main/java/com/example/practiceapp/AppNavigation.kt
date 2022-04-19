@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun navigate() {
+fun NavigatorWidget() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "login_page") {
         composable(route = "login_page") { LoginScreen() }

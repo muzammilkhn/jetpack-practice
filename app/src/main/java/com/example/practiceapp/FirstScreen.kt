@@ -42,7 +42,7 @@ fun FirstScreen(navController: NavController) {
             DrawerContent()
         },
         topBar = {
-            appBarContent(scope, scaffoldState)
+           AppBarContent(scope, scaffoldState)
         },
         content = {
             ContentWidget(navController = navController)
@@ -79,7 +79,7 @@ fun DrawerContent() {
 }
 
 @Composable
-fun appBarContent(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+fun AppBarContent(scope: CoroutineScope, scaffoldState: ScaffoldState) {
     TopAppBar(
         title = {
             Text(text = "Dashboard")
